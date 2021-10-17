@@ -1,109 +1,48 @@
 <template>
   <div class="movie_body">
     <ul>
-      <li>
-        <div class="pic_show"><img src="/images/movie_1.jpg" /></div>
+      <li v-for="item in movieList" :key="item.filmId">
+        <div class="pic_show"><img :src="item.poster" /></div>
         <div class="info_list">
-          <h2>无名之辈</h2>
-          <p><span class="person">17746</span> 人想看</p>
-          <p>主演: 陈建斌,任素汐,潘斌龙</p>
-          <p>2018-11-30上映</p>
+          <h2>{{item.name}}</h2>
+          <!-- <p><span class="person">17746</span> 人想看</p> -->
+          <p>主演:{{item.actors | actorFilter}}</p>
+          <p>{{ item.nation }} | {{ item.runtime }}分钟</p>
         </div>
         <div class="btn_pre">
           预售
         </div>
       </li>
-      <li>
-        <div class="pic_show"><img src="/images/movie_2.jpg" /></div>
-        <div class="info_list">
-          <h2>毒液：致命守护者</h2>
-          <p><span class="person">2346</span> 人想看</p>
-          <p>主演: 汤姆·哈迪,米歇尔·威廉姆斯,里兹·阿迈德</p>
-          <p>2018-11-30上映</p>
-        </div>
-        <div class="btn_pre">
-          预售
-        </div>
-      </li>
-      <li>
-        <div class="pic_show"><img src="/images/movie_1.jpg" /></div>
-        <div class="info_list">
-          <h2>无名之辈</h2>
-          <p><span class="person">17746</span> 人想看</p>
-          <p>主演: 陈建斌,任素汐,潘斌龙</p>
-          <p>2018-11-30上映</p>
-        </div>
-        <div class="btn_pre">
-          预售
-        </div>
-      </li>
-      <li>
-        <div class="pic_show"><img src="/images/movie_2.jpg" /></div>
-        <div class="info_list">
-          <h2>毒液：致命守护者</h2>
-          <p><span class="person">2346</span> 人想看</p>
-          <p>主演: 汤姆·哈迪,米歇尔·威廉姆斯,里兹·阿迈德</p>
-          <p>2018-11-30上映</p>
-        </div>
-        <div class="btn_pre">
-          预售
-        </div>
-      </li>
-      <li>
-        <div class="pic_show"><img src="/images/movie_1.jpg" /></div>
-        <div class="info_list">
-          <h2>无名之辈</h2>
-          <p><span class="person">17746</span> 人想看</p>
-          <p>主演: 陈建斌,任素汐,潘斌龙</p>
-          <p>2018-11-30上映</p>
-        </div>
-        <div class="btn_pre">
-          预售
-        </div>
-      </li>
-      <li>
-        <div class="pic_show"><img src="/images/movie_2.jpg" /></div>
-        <div class="info_list">
-          <h2>毒液：致命守护者</h2>
-          <p><span class="person">2346</span> 人想看</p>
-          <p>主演: 汤姆·哈迪,米歇尔·威廉姆斯,里兹·阿迈德</p>
-          <p>2018-11-30上映</p>
-        </div>
-        <div class="btn_pre">
-          预售
-        </div>
-      </li>
-      <li>
-        <div class="pic_show"><img src="/images/movie_1.jpg" /></div>
-        <div class="info_list">
-          <h2>无名之辈</h2>
-          <p><span class="person">17746</span> 人想看</p>
-          <p>主演: 陈建斌,任素汐,潘斌龙</p>
-          <p>2018-11-30上映</p>
-        </div>
-        <div class="btn_pre">
-          预售
-        </div>
-      </li>
-      <li>
-        <div class="pic_show"><img src="/images/movie_2.jpg" /></div>
-        <div class="info_list">
-          <h2>毒液：致命守护者</h2>
-          <p><span class="person">2346</span> 人想看</p>
-          <p>主演: 汤姆·哈迪,米歇尔·威廉姆斯,里兹·阿迈德</p>
-          <p>2018-11-30上映</p>
-        </div>
-        <div class="btn_pre">
-          预售
-        </div>
-      </li>
+    
     </ul>
   </div>
 </template>
 
 <script>
+import axios from 'axios'
+import Vue from "vue";
+Vue.filter("actorFilter", (data) => data.map((actor) => actor.name).join(" "));
 export default {
   name: "ComingSoon",
+  data(){
+    return{
+      movieList:[]
+    }
+  },
+   mounted(){
+    axios({
+     url:'https://m.maizuo.com/gateway?cityId=110100&pageNum=1&pageSize=10&type=2&k=5369126',
+     headers: {
+       'X-Client-Info':'{"a":"3000","ch":"1002","v":"5.0.4","e":"16343055032882305307705345","bc":"110100"}',
+       'X-Host':'mall.film-ticket.film.list'
+     }
+   }).then((res)=>{
+     var msg = res.data.msg;
+     if(msg ==='ok'){
+       this.movieList = res.data.data.films
+     }
+   })
+  }
 };
 </script>
 <style scoped>
