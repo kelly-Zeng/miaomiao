@@ -1,5 +1,6 @@
 <template>
   <div class="cinema_body">
+    <Loading v-if="isLoading"/>
     <ul>
       <li v-for="item in cityList" :key="item.cinemaId">
         <div>
@@ -17,26 +18,33 @@
       </li>
    
     </ul>
+
   </div>
 </template>
 
 <script>
+import BScroll from "better-scroll"
 import axios from 'axios'
 import { fixedNumberFilter } from "@/helpers/filter_helper.js";
 export default {
   name: "CiList",
   data(){
     return{
-      cityList:[]
+      cityList:[],
+      isLoading:true,
+      prevCityId:-1
     }
     
   },
    filters: {
     fixedNumberFilter,
   },
-   mounted(){
+   activated(){
+     var cityId=this.$store.state.city.id;
+    if(this.prevCityId===cityId){return;}
+    this.isLoading=true
     axios({
-     url:'https://m.maizuo.com/gateway?cityId=110100&ticketFlag=1&k=8974152',
+     url:`https://m.maizuo.com/gateway?cityId=${cityId}&ticketFlag=1&k=8974152`,
      headers: {
        'X-Client-Info':'{"a":"3000","ch":"1002","v":"5.0.4","e":"16343055032882305307705345","bc":"110100"}',
        'X-Host':'mall.film-ticket.cinema.list'
@@ -46,6 +54,13 @@ export default {
      var msg = res.data.msg;
      if(msg ==='ok'){
        this.cityList = res.data.data.cinemas
+       this.isLoading=false
+        this.prevCityId = cityId
+       this.$nextTick(
+          ()=>{
+            new BScroll(".cinema_body")
+          }
+        )
      }
    })
   }
