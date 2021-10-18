@@ -1,5 +1,6 @@
 <template>
   <div class="movie_body">
+   <Loading v-if="isLoading"/>
     <ul>
       <li v-for="item in movieList" :key="item.filmId">
         <div class="pic_show"><img :src="item.poster" /></div>
@@ -15,10 +16,12 @@
       </li>
     
     </ul>
+   
   </div>
 </template>
 
 <script>
+import BScroll from "better-scroll"
 import axios from 'axios'
 import Vue from "vue";
 Vue.filter("actorFilter", (data) => data.map((actor) => actor.name).join(" "));
@@ -26,12 +29,17 @@ export default {
   name: "ComingSoon",
   data(){
     return{
-      movieList:[]
+      movieList:[],
+      isLoading:true,
+      prevCityId:-1
     }
   },
-   mounted(){
+   activated(){
+     var cityId=this.$store.state.city.id;
+    if(this.prevCityId===cityId){return;}
+    this.isLoading=true
     axios({
-     url:'https://m.maizuo.com/gateway?cityId=110100&pageNum=1&pageSize=10&type=2&k=5369126',
+     url:`https://m.maizuo.com/gateway?cityId=${cityId}&pageNum=1&pageSize=10&type=2&k=5369126`,
      headers: {
        'X-Client-Info':'{"a":"3000","ch":"1002","v":"5.0.4","e":"16343055032882305307705345","bc":"110100"}',
        'X-Host':'mall.film-ticket.film.list'
@@ -39,7 +47,14 @@ export default {
    }).then((res)=>{
      var msg = res.data.msg;
      if(msg ==='ok'){
-       this.movieList = res.data.data.films
+       this.movieList = res.data.data.films;
+       this.isLoading=false
+       this.prevCityId=cityId
+        this.$nextTick(
+          ()=>{
+            new BScroll(".movie_body")
+          }
+        )
      }
    })
   }
