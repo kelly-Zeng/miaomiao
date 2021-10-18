@@ -1,0 +1,44 @@
+[33mcommit 9367ffb954150c40846400cbf9f335cdb7f1a422[m[33m ([m[1;36mHEAD -> [m[1;32mdev[m[33m)[m
+Merge: 85d9610 97b5011
+Author: kelly-Z <9664533+kelly-z@user.noreply.gitee.com>
+Date:   Mon Oct 18 13:58:56 2021 +0800
+
+    Merge branch 'getCity' into dev
+
+[33mcommit 97b50112e824f327030c53dc815882c0f50de285[m[33m ([m[1;32mgetCity[m[33m)[m
+Author: kelly-Z <9664533+kelly-z@user.noreply.gitee.com>
+Date:   Mon Oct 18 13:58:01 2021 +0800
+
+    getCity
+
+[33mcommit 85d961020951db13d136c9df1004332c6fcdbec6[m[33m ([m[1;31morigin/dev[m[33m)[m
+Merge: f368b63 791af12
+Author: kelly-Z <9664533+kelly-z@user.noreply.gitee.com>
+Date:   Sun Oct 17 15:05:00 2021 +0800
+
+    Merge branch 'setData' into dev
+
+[33mcommit 791af12d56bd07a0562bf3b1fadf8d4c93ee0368[m
+Author: kelly-Z <9664533+kelly-z@user.noreply.gitee.com>
+Date:   Sun Oct 17 15:02:32 2021 +0800
+
+    add.setData
+
+[33mcommit f368b630a97a38db06a5351227db4f698294bf7f[m
+Merge: 1819ccd 5f8cda8
+Author: kelly-Z <9664533+kelly-z@user.noreply.gitee.com>
+Date:   Sat Oct 16 15:48:54 2021 +0800
+
+    Merge branch 'createComponents' into dev
+
+[33mcommit 5f8cda8aa3d6db4ed14f30ef2c9148a702546a8c[m
+Author: kelly-Z <9664533+kelly-z@user.noreply.gitee.com>
+Date:   Sat Oct 16 15:46:37 2021 +0800
+
+    add createComponents
+
+[33mcommit 1819ccd711cff383529b78878c659a54c3ae1f5c[m[33m ([m[1;31morigin/master[m[33m, [m[1;32mmaster[m[33m)[m
+Author: kelly-Z <9664533+kelly-z@user.noreply.gitee.com>
+Date:   Sat Oct 16 09:04:17 2021 +0800
+
+    init

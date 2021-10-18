@@ -1,6 +1,6 @@
 <template>
   <div class="movie_body" ref="movie_body">
-    <Loading v-if="isLoading"/>
+    <Loading v-if="isLoading" />
     <!-- <Scroller :handleToScroll="handleToScroll" :handleToTouchEnd="handleToTouchEnd"> -->
     <ul>
       <!-- <li>
@@ -15,13 +15,13 @@
           购票
         </div>
       </li> -->
-      <li class="pullDown">{{pullDownMsg}}</li>
+      <li class="pullDown">{{ pullDownMsg }}</li>
       <li v-for="item in movieList" :key="item.filmId">
-        <div class="pic_show" @tap="handleToDetail">
+        <div class="pic_show" @click="handleToDetail(item.filmId)">
           <img :src="item.poster" />
         </div>
         <div class="info_list">
-          <h2>{{ item.name }}</h2>
+          <h2 @click="handleToDetail(item.filmId)">{{ item.name }}</h2>
           <p>
             观众评 <span class="grade">{{ item.grade }}</span>
           </p>
@@ -48,18 +48,19 @@ export default {
   data() {
     return {
       movieList: [],
-      pullDownMsg:'',
-      isLoading:true,
-      prevCityId:-1
+      pullDownMsg: "",
+      isLoading: true,
+      prevCityId: -1,
     };
   },
   activated() {
-    var cityId=this.$store.state.city.id;
-    if(this.prevCityId===cityId){return;}
-    this.isLoading=true
+    var cityId = this.$store.state.city.id;
+    if (this.prevCityId === cityId) {
+      return;
+    }
+    this.isLoading = true;
     axios({
-      url:
-        `https://m.maizuo.com/gateway?cityId=${cityId}&pageNum=1&pageSize=37&type=1&k=8796911`,
+      url: `https://m.maizuo.com/gateway?cityId=${cityId}&pageNum=1&pageSize=37&type=1&k=8796911`,
       headers: {
         "X-Client-Info":
           '{"a":"3000","ch":"1002","v":"5.0.4","e":"16343055032882305307705345","bc":"110100"}',
@@ -70,83 +71,84 @@ export default {
       if (msg === "ok") {
         this.movieList = res.data.data.films;
         this.isLoading = false;
-        this.prevCityId = cityId
-         this.$nextTick(
-          ()=>{
-            new BScroll(".movie_body")
-          }
-        )
-    //     this.$nextTick(() => {
-    //       var scroll = new BScroll(this.$refs.movie_body, {
-    //         tap: true,
-    //         probeType: 1,
-    //       });
-    //       scroll.on("scroll", (pos) => {
-    //         // console.log("scroll");
-    //         if(pos.y>30){
-    //         this.pullDownMsg = '正在更新中'
-    //         }
-            
-    //       });
-    //       scroll.on("touchEnd", (pos) => {
-    //        if(pos.y>30){
-    //           axios({
-    //   url:
-    //     "https://m.maizuo.com/gateway?cityId=110100&pageNum=2&pageSize=10&type=1&k=8796911",
-    //   headers: {
-    //     "X-Client-Info":
-    //       '{"a":"3000","ch":"1002","v":"5.0.4","e":"16343055032882305307705345","bc":"110100"}',
-    //     "X-Host": "mall.film-ticket.film.list",
-    //   },
-    // }).then((res)=>{
-    //   var msg = res.data.msg;
-    //   if(msg == 'ok'){
-    //     this.pullDownMsg = '更新成功'
-    //     setTimeout(() => {
-    //       this.movieList = res.data.data.films;
-    //       this.pullDownMsg = ''
-    //     }, 1000);
-        
-    //   }
-    // })
-    //        }
-    //       });
-    //     });
+        this.prevCityId = cityId;
+        this.$nextTick(() => {
+          new BScroll(".movie_body", {
+            scrollY: true,
+            click: true,
+          });
+        });
+        //     this.$nextTick(() => {
+        //       var scroll = new BScroll(this.$refs.movie_body, {
+        //         tap: true,
+        //         probeType: 1,
+        //       });
+        //       scroll.on("scroll", (pos) => {
+        //         // console.log("scroll");
+        //         if(pos.y>30){
+        //         this.pullDownMsg = '正在更新中'
+        //         }
+
+        //       });
+        //       scroll.on("touchEnd", (pos) => {
+        //        if(pos.y>30){
+        //           axios({
+        //   url:
+        //     "https://m.maizuo.com/gateway?cityId=110100&pageNum=2&pageSize=10&type=1&k=8796911",
+        //   headers: {
+        //     "X-Client-Info":
+        //       '{"a":"3000","ch":"1002","v":"5.0.4","e":"16343055032882305307705345","bc":"110100"}',
+        //     "X-Host": "mall.film-ticket.film.list",
+        //   },
+        // }).then((res)=>{
+        //   var msg = res.data.msg;
+        //   if(msg == 'ok'){
+        //     this.pullDownMsg = '更新成功'
+        //     setTimeout(() => {
+        //       this.movieList = res.data.data.films;
+        //       this.pullDownMsg = ''
+        //     }, 1000);
+
+        //   }
+        // })
+        //        }
+        //       });
+        //     });
       }
     });
   },
   methods: {
-    handleToDetail() {
-      console.log("handleToDetail");
+    handleToDetail(filmId) {
+      // console.log( movieId);
+      this.$router.push('/movie/detail/1/'+filmId)
     },
-    handleToScroll(pos){
-      if(pos.y>30){
-            this.pullDownMsg = '正在更新中'
-            }
+    handleToScroll(pos) {
+      if (pos.y > 30) {
+        this.pullDownMsg = "正在更新中";
+      }
     },
-    handleToTouchEnd(pos){
-      if(pos.y>30){
-              axios({
-      url:
-        "https://m.maizuo.com/gateway?cityId=110100&pageNum=1&pageSize=37&type=1&k=8796911",
-      headers: {
-        "X-Client-Info":
-          '{"a":"3000","ch":"1002","v":"5.0.4","e":"16343055032882305307705345","bc":"110100"}',
-        "X-Host": "mall.film-ticket.film.list",
-      },
-    }).then((res)=>{
-      var msg = res.data.msg;
-      if(msg === 'ok'){
-        this.pullDownMsg = '更新成功'
-        setTimeout(() => {
-          this.movieList = res.data.data.films;
-          this.pullDownMsg = ''
-        }, 1000);
-        
+    handleToTouchEnd(pos) {
+      if (pos.y > 30) {
+        axios({
+          url:
+            "https://m.maizuo.com/gateway?cityId=110100&pageNum=1&pageSize=37&type=1&k=8796911",
+          headers: {
+            "X-Client-Info":
+              '{"a":"3000","ch":"1002","v":"5.0.4","e":"16343055032882305307705345","bc":"110100"}',
+            "X-Host": "mall.film-ticket.film.list",
+          },
+        }).then((res) => {
+          var msg = res.data.msg;
+          if (msg === "ok") {
+            this.pullDownMsg = "更新成功";
+            setTimeout(() => {
+              this.movieList = res.data.data.films;
+              this.pullDownMsg = "";
+            }, 1000);
+          }
+        });
       }
-    })
-      }
-    }
+    },
   },
 };
 </script>
@@ -221,10 +223,9 @@ export default {
 .movie_body .btn_pre {
   background-color: #3c9fe6;
 }
-.movie_body .pullDown{
-margin: 0;
-padding: 0;
-border: 0;
+.movie_body .pullDown {
+  margin: 0;
+  padding: 0;
+  border: 0;
 }
-
 </style>
